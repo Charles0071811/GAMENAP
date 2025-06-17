@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'Righteous';
+    src: url('../font/Righteous-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -10,22 +17,26 @@ body {
     align-items: center;
     min-height: 100vh;
     background: #1a1a2e;
-    font-family: Arial, sans-serif;
+    font-family: 'Righteous', Arial, sans-serif;
+    letter-spacing: 0.5px;
 }
 
 .game-container {
     position: relative;
-    width: 800px;
-    height: 400px;
+    width: 100%;
+    max-width: 800px;
+    height: 100vh;
+    max-height: 400px;
     overflow: hidden;
     border: 2px solid #fff;
     border-radius: 10px;
+    margin: 0 auto;
 }
 
 .game-area {
     width: 100%;
     height: 100%;
-    background: url('/static/images/background/background1.png') no-repeat center center;
+    background: url('../images/background/background1.png') no-repeat center center;
     background-size: cover;
     position: relative;
 }
@@ -33,7 +44,7 @@ body {
 .astronaut {
     width: 50px;
     height: 50px;
-    background: url('/static/images/player/astro1.png') no-repeat;
+    background: url('../images/player/astro1.png') no-repeat;
     background-size: contain;
     position: absolute;
     bottom: 0;
@@ -46,14 +57,14 @@ body {
 }
 
 .astronaut.jumping {
-    background: url('/static/images/player/astro2.png') no-repeat;
+    background: url('../images/player/astro2.png') no-repeat;
     background-size: contain;
 }
 
 .cloud {
     width: 80px;
     height: 30px;
-    background: url('/static/images/clouds/cloud1.png') no-repeat;
+    background: url('../images/clouds/cloud1.png') no-repeat;
     background-size: contain;
     position: absolute;
     bottom: 0;
@@ -62,7 +73,7 @@ body {
 .can {
     width: 30px;
     height: 30px;
-    background: url('/static/images/can/NAP_can.png') no-repeat;
+    background: url('../images/can/NAP_can.png') no-repeat;
     background-size: contain;
     position: absolute;
 }
@@ -70,7 +81,7 @@ body {
 .bed {
     width: 100px;
     height: 60px;
-    background: url('/static/images/bed/bed.png') no-repeat;
+    background: url('../images/bed/bed.png') no-repeat;
     background-size: contain;
     position: absolute;
     bottom: 0;
@@ -114,7 +125,7 @@ body {
 
 .astronaut.sleeping {
     animation: sleep 1.5s forwards;
-    background: url('/static/images/player/astro2.png') no-repeat;
+    background: url('../images/player/astro2.png') no-repeat;
     background-size: contain;
     z-index: 2;
 }
@@ -136,8 +147,11 @@ body {
     top: 20px;
     right: 20px;
     color: #fff;
-    font-size: 24px;
+    font-size: 28px;
     z-index: 1;
+    font-family: 'Righteous', Arial, sans-serif;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: 1px;
 }
 
 .message {
@@ -146,13 +160,15 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     color: #fff;
-    font-size: 32px;
+    font-size: 36px;
     text-align: center;
     display: none;
     z-index: 3;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     animation: fadeIn 0.5s ease-in;
     width: 100%;
+    font-family: 'Righteous', Arial, sans-serif;
+    letter-spacing: 1px;
 }
 
 .start-button {
@@ -161,13 +177,16 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 15px 30px;
-    font-size: 20px;
+    font-size: 24px;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     z-index: 2;
     transition: all 0.3s ease;
+    font-family: 'Righteous', Arial, sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 .start-button.play-again {
@@ -226,12 +245,114 @@ body {
 
 @keyframes run {
     0% {
-        background-image: url('/static/images/player/astro1.png');
+        background-image: url('../images/player/astro1.png');
     }
     50% {
-        background-image: url('/static/images/player/astro2.png');
+        background-image: url('../images/player/astro2.png');
     }
     100% {
-        background-image: url('/static/images/player/astro1.png');
+        background-image: url('../images/player/astro1.png');
+    }
+}
+
+.music-toggle {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid #fff;
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.music-toggle:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.music-toggle.muted {
+    background: rgba(255, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+    .game-container {
+        height: 100vh;
+        max-height: 100vh;
+        border: none;
+        border-radius: 0;
+    }
+
+    .astronaut {
+        width: 40px;
+        height: 40px;
+    }
+
+    .cloud {
+        width: 60px;
+        height: 25px;
+    }
+
+    .can {
+        width: 25px;
+        height: 25px;
+    }
+
+    .bed {
+        width: 80px;
+        height: 50px;
+    }
+
+    .score {
+        font-size: 24px;
+    }
+
+    .message {
+        font-size: 28px;
+    }
+
+    .start-button {
+        font-size: 20px;
+        padding: 12px 24px;
+    }
+
+    .music-toggle {
+        width: 35px;
+        height: 35px;
+        font-size: 18px;
+    }
+}
+
+@media (max-height: 500px) {
+    .game-container {
+        height: 100vh;
+    }
+
+    .astronaut {
+        width: 35px;
+        height: 35px;
+    }
+
+    .cloud {
+        width: 50px;
+        height: 20px;
+    }
+
+    .can {
+        width: 20px;
+        height: 20px;
+    }
+
+    .bed {
+        width: 70px;
+        height: 45px;
     }
 } 

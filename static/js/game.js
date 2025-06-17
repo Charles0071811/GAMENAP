@@ -7,11 +7,69 @@ class Game {
         this.messageElement = document.getElementById('message');
         this.startButton = document.getElementById('startButton');
         this.bed = document.getElementById('bed');
+        this.backgroundMusic = document.getElementById('backgroundMusic');
+        this.snoringSound = document.getElementById('snoringSound');
+        this.musicToggle = document.getElementById('musicToggle');
         
-        if (!this.astronaut || !this.gameArea || !this.scoreElement || !this.messageElement || !this.startButton || !this.bed) {
+        if (!this.astronaut || !this.gameArea || !this.scoreElement || !this.messageElement || 
+            !this.startButton || !this.bed || !this.backgroundMusic || !this.snoringSound || !this.musicToggle) {
             console.error('Failed to find required elements');
             return;
         }
+        
+        // Set up music
+        this.backgroundMusic.loop = true;
+        this.backgroundMusic.volume = 0.5;
+        
+        // Try to play music immediately
+        const playMusic = () => {
+            this.backgroundMusic.play().catch(error => {
+                console.log('Initial autoplay prevented:', error);
+                // Add click event to document to start music
+                document.addEventListener('click', () => {
+                    this.backgroundMusic.play();
+                    document.removeEventListener('click', playMusic);
+                }, { once: true });
+            });
+        };
+        
+        // Try to play music immediately
+        playMusic();
+
+        // Set up music toggle
+        this.musicToggle.addEventListener('mousedown', (e) => {
+            e.preventDefault(); // Prevent any default behavior
+            if (this.backgroundMusic.paused) {
+                this.backgroundMusic.play();
+                this.musicToggle.textContent = '🔊';
+                this.musicToggle.classList.remove('muted');
+            } else {
+                this.backgroundMusic.pause();
+                this.musicToggle.textContent = '🔇';
+                this.musicToggle.classList.add('muted');
+            }
+        });
+
+        // Add touch event for music toggle
+        this.musicToggle.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (this.backgroundMusic.paused) {
+                this.backgroundMusic.play();
+                this.musicToggle.textContent = '🔊';
+                this.musicToggle.classList.remove('muted');
+            } else {
+                this.backgroundMusic.pause();
+                this.musicToggle.textContent = '🔇';
+                this.musicToggle.classList.add('muted');
+            }
+        });
+        
+        // Prevent space key from triggering when clicking the music toggle
+        this.musicToggle.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+            }
+        });
         
         this.resetGameState();
         
@@ -19,7 +77,23 @@ class Game {
             console.log('Start button clicked');
             this.startGame();
         });
+
+        // Add touch event for start button
+        this.startButton.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            console.log('Start button touched');
+            this.startGame();
+        });
+
         document.addEventListener('keydown', (e) => this.handleKeyPress(e));
+        
+        // Add touch event for jumping
+        this.gameArea.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (!this.isJumping && !this.isGameOver) {
+                this.jump();
+            }
+        });
         
         // Show start button initially
         this.startButton.style.display = 'block';
@@ -58,6 +132,15 @@ class Game {
         this.startButton.classList.remove('play-again', 'try-again');
         this.startButton.classList.add('start');
         this.startButton.textContent = 'Start Game';
+
+        // Stop snoring sound if it's playing
+        this.snoringSound.pause();
+        this.snoringSound.currentTime = 0;
+
+        // Start background music
+        this.backgroundMusic.play().catch(error => {
+            console.log('Music autoplay prevented:', error);
+        });
     }
 
     cleanup() {
@@ -107,6 +190,13 @@ class Game {
         this.astronaut.classList.add('running');
         console.log('Astronaut running animation started');
         
+        // Ensure music is playing
+        if (this.backgroundMusic.paused) {
+            this.backgroundMusic.play().catch(error => {
+                console.log('Music autoplay prevented:', error);
+            });
+        }
+        
         // Start game loops
         this.gameLoop();
         this.spawnClouds();
@@ -115,7 +205,8 @@ class Game {
     }
 
     handleKeyPress(e) {
-        if (e.code === 'Space' && !this.isJumping && !this.isGameOver) {
+        // Only handle space key if we're not clicking the music toggle
+        if (e.code === 'Space' && !this.isJumping && !this.isGameOver && e.target !== this.musicToggle) {
             console.log('Jump triggered');
             this.jump();
         }
@@ -257,6 +348,10 @@ class Game {
         // Stop all game loops and spawning
         this.cleanup();
         
+        // Stop background music
+        this.backgroundMusic.pause();
+        this.backgroundMusic.currentTime = 0;
+        
         // Show the bed with animation
         this.bed.style.display = 'block';
         // Force a reflow to ensure the animation starts
@@ -270,11 +365,18 @@ class Game {
         this.astronaut.classList.remove('running', 'jumping');
         this.astronaut.classList.add('sleeping');
         console.log('Astronaut moved to bed'); // Debug log
+
+        // Play snoring sound once
+        this.snoringSound.volume = 0.7; // Set volume to 70%
+        this.snoringSound.loop = false; // Don't loop
+        this.snoringSound.play().catch(error => {
+            console.log('Snoring sound autoplay prevented:', error);
+        });
         
         // Show win message after a short delay
         setTimeout(() => {
             this.messageElement.style.display = 'block';
-            this.messageElement.textContent = 'Congratulations! You managed to get a nap!';
+            this.messageElement.textContent = 'Congratulations! Take a NAP!';
             this.startButton.textContent = 'Play Again';
             this.startButton.classList.remove('try-again', 'start');
             this.startButton.classList.add('play-again');
@@ -287,7 +389,7 @@ class Game {
         this.isGameOver = true;
         this.messageElement.style.display = 'block';
         if (success) {
-            this.messageElement.textContent = 'Congratulations! You managed to get a nap!';
+            this.messageElement.textContent = 'Congratulations! Take a NAP!';
             this.astronaut.classList.add('sleeping');
             this.startButton.textContent = 'Play Again';
             this.startButton.classList.remove('try-again', 'start');

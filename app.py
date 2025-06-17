@@ -7,14 +7,9 @@ app = Flask(__name__)
 def index():
     return render_template('game.html')
 
-@app.route('/static/images/<path:filename>')
-def serve_image(filename):
-    # Split the path to get the directory and file
-    parts = filename.split('/')
-    if len(parts) == 2:
-        directory, file = parts
-        return send_from_directory(os.path.join('resources', directory), file)
-    return send_from_directory('resources', filename)
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    return send_from_directory('static', filename)
 
 if __name__ == '__main__':
     app.run(debug=True) 
