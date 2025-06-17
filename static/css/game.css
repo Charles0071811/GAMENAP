@@ -1,6 +1,6 @@
-@font-face {
+ @font-face {
     font-family: 'Righteous';
-    src: url('../font/Righteous-Regular.ttf') format('truetype');
+    src: url('/static/font/Righteous-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -36,7 +36,7 @@ body {
 .game-area {
     width: 100%;
     height: 100%;
-    background: url('../images/background/background1.png') no-repeat center center;
+    background: url('/static/background/background1.png') no-repeat center center;
     background-size: cover;
     position: relative;
 }
@@ -44,7 +44,7 @@ body {
 .astronaut {
     width: 50px;
     height: 50px;
-    background: url('../images/player/astro1.png') no-repeat;
+    background: url('/static/player/astro1.png') no-repeat;
     background-size: contain;
     position: absolute;
     bottom: 0;
@@ -57,14 +57,14 @@ body {
 }
 
 .astronaut.jumping {
-    background: url('../images/player/astro2.png') no-repeat;
+    background: url('/static/player/astro2.png') no-repeat;
     background-size: contain;
 }
 
 .cloud {
     width: 80px;
     height: 30px;
-    background: url('../images/clouds/cloud1.png') no-repeat;
+    background: url('/static/clouds/cloud1.png') no-repeat;
     background-size: contain;
     position: absolute;
     bottom: 0;
@@ -73,7 +73,7 @@ body {
 .can {
     width: 30px;
     height: 30px;
-    background: url('../images/can/NAP_can.png') no-repeat;
+    background: url('/static/can/NAP_can.png') no-repeat;
     background-size: contain;
     position: absolute;
 }
@@ -81,7 +81,7 @@ body {
 .bed {
     width: 100px;
     height: 60px;
-    background: url('../images/bed/bed.png') no-repeat;
+    background: url('/static/bed/bed.png') no-repeat;
     background-size: contain;
     position: absolute;
     bottom: 0;
@@ -125,7 +125,7 @@ body {
 
 .astronaut.sleeping {
     animation: sleep 1.5s forwards;
-    background: url('../images/player/astro2.png') no-repeat;
+    background: url('/static/player/astro2.png') no-repeat;
     background-size: contain;
     z-index: 2;
 }
@@ -245,13 +245,13 @@ body {
 
 @keyframes run {
     0% {
-        background-image: url('../images/player/astro1.png');
+        background-image: url('/static/player/astro1.png');
     }
     50% {
-        background-image: url('../images/player/astro2.png');
+        background-image: url('/static/player/astro2.png');
     }
     100% {
-        background-image: url('../images/player/astro1.png');
+        background-image: url('/static/player/astro1.png');
     }
 }
 

@@ -20,11 +20,12 @@
         <button id="startButton" class="start-button">Start Game</button>
     </div>
     <audio id="backgroundMusic" loop>
-        <source src="{{ url_for('static', filename='images/music/NAP_Game_Music.mp3') }}" type="audio/mpeg">
+    	<source src="{{ url_for('static', filename='music/NAP_Game_Music.mp3') }}" type="audio/mpeg">
     </audio>
     <audio id="snoringSound">
-        <source src="{{ url_for('static', filename='images/music/male-snoring-297875.mp3') }}" type="audio/mpeg">
-    </audio>
+    	<source src="{{ url_for('static', filename='music/male-snoring-297875.mp3') }}" type="audio/mpeg">
+</audio>
+
     <script src="{{ url_for('static', filename='js/game.js') }}"></script>
 </body>
 </html> 
